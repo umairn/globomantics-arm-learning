@@ -26,10 +26,10 @@ jobs:
         uses: Azure/login@v1
         with: 
            creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-     - name: Deploy  Resource Manager rg-githubactions
-       uses: Azure/arm-deploy@v1
-       with: 
+      
+      - name: Deploy  Resource Manager rg-githubactions
+        uses: Azure/arm-deploy@v1
+        with: 
           scope: subscription
           subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a  
           region: North Europe  
