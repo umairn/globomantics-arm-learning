@@ -39,7 +39,7 @@ jobs:
       - name: Deploy storage account
         uses: Azure/arm-deploy@v1
         with: 
-          scope: resourcegroup,
+          scope: resourcegroup
           resourceGroupName: rg-githubactions
           subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a  
           template: ./arm-template/storageaccount.json
