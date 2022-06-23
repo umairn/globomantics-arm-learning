@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageaccountname": {
-            "value": "sa-githubactions" 
+            "value": "sagithubactions" 
         },
         "location": {
             "value": "North Europe" 
