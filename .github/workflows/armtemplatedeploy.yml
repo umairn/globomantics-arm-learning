@@ -36,8 +36,8 @@ jobs:
           template: ./arm-template/resourcegroup.json
           parameters: 
             location="West Europe"
-            resourceGroupName=rg-githubactions
-          deploymentName: rg-githubactions
+            resourceGroupName=rg-githubactions2
+          deploymentName: rg-githubactions2
 
       - name: Deploy storage account
         uses: Azure/arm-deploy@v1
