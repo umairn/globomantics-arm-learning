@@ -43,5 +43,8 @@ jobs:
           resourceGroupName: rg-githubactions
           subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a  
           template: ./arm-template/storageaccount.json
-          parameters: ./arm-template/storageaccount.parameters.json
+          parameters: 
+            ./arm-template/storageaccount.parameters.json
+            storageAccountName=sagithubactions1
+            location="West Europe"
           deploymentMode: incremental
