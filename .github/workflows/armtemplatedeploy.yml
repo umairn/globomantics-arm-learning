@@ -45,6 +45,6 @@ jobs:
           template: ./arm-template/storageaccount.json
           parameters: 
             ./arm-template/storageaccount.parameters.json
-            storageAccountName=sagithubactions1
+            storageaccountname=sagithubactions1
             location="West Europe"
           deploymentMode: incremental
