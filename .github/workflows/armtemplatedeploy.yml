@@ -36,8 +36,8 @@ jobs:
           template: ./arm-template/resourcegroup.json
           parameters: 
             location="West Europe"
-            resourceGroupName=rg-githubactions2
-          deploymentName: rg-githubactions2
+            resourceGroupName=rg-githubactions
+          deploymentName: rg-githubactions
 
       - name: Deploy storage account
         uses: Azure/arm-deploy@v1
@@ -52,4 +52,15 @@ jobs:
             storageaccountname=sagithubactions1
             location="West Europe"
           deploymentMode: incremental
-      - run: echo $({steps.storageAccountDeploy.outputs.BlobUri})
+
+      - name: Deploy storage account
+        uses: Azure/arm-deploy@v1
+        with: 
+          scope: resourcegroup
+          resourceGroupName: rg-githubactions
+          subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a  
+          template: ./arm-template/virtualmachine.json
+          parameters: 
+             adminPassword="MySecureP@ssword!"
+          deploymentMode: incremental
+  
