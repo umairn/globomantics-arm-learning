@@ -53,7 +53,7 @@ jobs:
             location="West Europe"
           deploymentMode: incremental
 
-      - name: Deploy storage account
+      - name: Deploy virtual machine
         uses: Azure/arm-deploy@v1
         with: 
           scope: resourcegroup
@@ -61,6 +61,6 @@ jobs:
           subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a  
           template: ./arm-template/virtualmachine.json
           parameters: 
-             adminPassword="MySecureP@ssword!"
+             adminPassword=${{secrets.UBUNTU_ADMIN_PASSWORD}}
           deploymentMode: incremental
   
