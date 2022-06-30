@@ -12,7 +12,8 @@
             "type": "string",
             "metadata": {
                 "description": "Enter the location to deploy the resources to"
-            }
+            },
+            "defaultValue": "North Europe"
         }
     },
     "functions": [],
