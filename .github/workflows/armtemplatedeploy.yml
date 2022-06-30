@@ -41,9 +41,7 @@ jobs:
           subscriptionId: ${{env.subscriptionId}}  
           region: ${{env.location}}   
           template: ./arm-template/resourcegroup.json
-          parameters: 
-            location=${{env.location}}
-            resourceGroupName=${{ env.resource_group_name }}
+          parameters:  location=${{env.location}} resourceGroupName=${{ env.resource_group_name }}
           deploymentName: ${{ env.resource_group_name }}
 
       - name: Deploy storage account
@@ -54,10 +52,7 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
           template: ./arm-template/storageaccount.json
-          parameters: |
-            sku=Standard_LRS
-            storageaccountname=sagithubactions1
-            location=${{env.location}}
+          parameters: sku=Standard_LRS  storageaccountname=sagithubactions1  location=${{env.location}}
           deploymentMode: incremental
 
       - name: Deploy virtual machine
@@ -67,9 +62,7 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
           template: ./arm-template/virtualmachine.json
-          parameters: |
-             adminPassword=${{secrets.UBUNTU_ADMIN_PASSWORD}}
-             location=${{env.location}}
+          parameters: adminPassword=${{secrets.UBUNTU_ADMIN_PASSWORD}} location=${{env.location}}
           deploymentMode: incremental
   
     # This workflow contains a single job called "build"
@@ -114,10 +107,7 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
           template: ./arm-template/storageaccount.json
-          parameters: |
-            sku=Standard_LRS
-            storageaccountname=sagithubactions3
-            location=${{env.location}}
+          parameters: sku=Standard_LRS  storageaccountname=sagithubactions3  location=${{env.location}}
           deploymentMode: incremental
 
       - name: Deploy virtual machine
