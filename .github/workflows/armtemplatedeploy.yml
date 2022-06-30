@@ -10,17 +10,20 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  resource_group_name: rg-githubactions
-  location: northeurope
   subscriptionId: 82be12b4-2c43-4a1f-9909-daee4288ea1a 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  armDeploy:
+  armDeployStaging:
     # The type of runner that the job will run on
+    name: Deploy to Staging 
     runs-on: ubuntu-latest
-
+    env:
+      resource_group_name: rg-stg-githubactions
+      location: northeurope
+    environment:
+      name: staging
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -51,7 +54,7 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
           template: ./arm-template/storageaccount.json
-          parameters: 
+          parameters: |
             sku=Standard_LRS
             storageaccountname=sagithubactions1
             location=${{env.location}}
@@ -64,7 +67,67 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
           template: ./arm-template/virtualmachine.json
+          parameters: |
+             adminPassword=${{secrets.UBUNTU_ADMIN_PASSWORD}}
+             location=${{env.location}}
+          deploymentMode: incremental
+  
+    # This workflow contains a single job called "build"
+  armDeployProduction:
+    # The type of runner that the job will run on
+    name: Deploy to Production 
+    runs-on: ubuntu-latest
+    env:
+      resource_group_name: rg-prod-githubactions
+      location: westeurope
+    environment:
+      name: production
+
+    needs: armDeployStaging
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with: 
+           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy  Resource Manager ${{ env.resource_group_name }}
+        uses: Azure/arm-deploy@v1
+        with: 
+          scope: subscription
+          subscriptionId: ${{env.subscriptionId}}  
+          region: ${{env.location}}   
+          template: ./arm-template/resourcegroup.json
           parameters: 
+            location=${{env.location}}
+            resourceGroupName=${{ env.resource_group_name }}
+          deploymentName: ${{ env.resource_group_name }}
+
+      - name: Deploy storage account
+        uses: Azure/arm-deploy@v1
+        id: storageAccountDeploy
+        with: 
+          scope: resourcegroup
+          resourceGroupName: ${{ env.resource_group_name }}
+          subscriptionId: ${{env.subscriptionId}}    
+          template: ./arm-template/storageaccount.json
+          parameters: |
+            sku=Standard_LRS
+            storageaccountname=sagithubactions3
+            location=${{env.location}}
+          deploymentMode: incremental
+
+      - name: Deploy virtual machine
+        uses: Azure/arm-deploy@v1
+        with: 
+          scope: resourcegroup
+          resourceGroupName: ${{ env.resource_group_name }}
+          subscriptionId: ${{env.subscriptionId}}    
+          template: ./arm-template/virtualmachine.json
+          parameters: |
              adminPassword=${{secrets.UBUNTU_ADMIN_PASSWORD}}
              location=${{env.location}}
           deploymentMode: incremental
