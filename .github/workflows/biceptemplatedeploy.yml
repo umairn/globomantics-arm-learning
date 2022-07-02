@@ -34,8 +34,8 @@ jobs:
         uses: Azure/cli@1.0.4
         with: 
           inlinescript:  az deployment sub create \
+                         --location ${{env.location}}  \
                          --name ${{env.resource_group_name}} \
-                         --location "${{env.location}}"  \
                          --template-file ./bicep-templates/resourcegroup.bicep \
                          --parameters  resourcegroupname=${{ env.resource_group_name}} location="${{env.location}}"
  
