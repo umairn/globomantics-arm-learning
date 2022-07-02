@@ -33,14 +33,16 @@ jobs:
       - name: Deploy  Resource Group
         uses: Azure/cli@1.0.4
         with: 
-          inlinescript:  az deployment sub create  --name ${{env.resource_group_name}}   --location "${{env.location}}"   --template-file ./bicep-templates/resourcegroup.bicep  --paramters resourceGroupName=${{ env.resource_group_name}} location="${{env.location}}"
-      
+          inlinescript:  az deployment sub create \
+                         --name ${{env.resource_group_name}} \
+                         --location "${{env.location}}"  \
+                         --template-file ./bicep-templates/resourcegroup.bicep \
+                         --parameters  resourcegroupname=${{ env.resource_group_name}} location="${{env.location}}"
+ 
       - name: Deploy  virtual network
         uses: Azure/cli@1.0.4
         with: 
-          inlinescript: az deployment group create  --resource-group ${{ env.resource_group_name}}   --template-file ./bicep-templates/virtualnetwork.bicep   --paramters vNetPrefix=bicepazcli  location="${{env.location}}"
-
-
+          inlinescript: az deployment group create --resource-group ${{ env.resource_group_name}} --template-file ./bicep-templates/virtualnetwork.bicep  --paramters vNetPrefix=bicepazcli  location="${{env.location}}"
 
   bicepArmDeployDeploy:
     # The type of runner that the job will run on
@@ -69,7 +71,7 @@ jobs:
           subscriptionId: ${{env.subscriptionId}}  
           deploymentName: ${{ env.resource_group_name }}
           template: ./bicep-template/resourcegroup.bicep
-          parameters:  location=${{env.location}} resourceGroupName=${{ env.resource_group_name }}
+          parameters:  location=${{env.location}} resourcegroupname=${{ env.resource_group_name }}
           
       - name: Deploy vnet
         uses: Azure/arm-deploy@v1
