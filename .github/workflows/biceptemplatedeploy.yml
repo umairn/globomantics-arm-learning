@@ -39,7 +39,7 @@ jobs:
         uses: Azure/cli@1.0.4
         with: 
           inlinescript: az deployment group create --resource-group ${{ env.resource_group_name}}  --template-file ./bicep-templates/virtualnetwork.bicep  --parameters vNetPrefix=bicepazcli  location="${{env.location}}"
-          
+
   bicepArmDeployDeploy:
     # The type of runner that the job will run on
     name: Bicep arm-deploy Deploy Job
@@ -66,7 +66,7 @@ jobs:
           region: ${{env.location}}   
           subscriptionId: ${{env.subscriptionId}}  
           deploymentName: ${{ env.resource_group_name }}
-          template: ./bicep-template/resourcegroup.bicep
+          template: ./bicep-templates/resourcegroup.bicep
           parameters:  location=${{env.location}} resourcegroupname=${{ env.resource_group_name }}
           
       - name: Deploy vnet
@@ -76,5 +76,5 @@ jobs:
           scope: resourcegroup
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{env.subscriptionId}}    
-          template: ./bicep-template/virtualnetwork.bicep
+          template: ./bicep-templates/virtualnetwork.bicep
           parameters: vNetPrefix=biceparmdeploy  location=${{env.location}}
